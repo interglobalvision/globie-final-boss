@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class Page401 extends Component {
+export class Page404 extends Component {
   render() {
     return(
       <div className="row">
