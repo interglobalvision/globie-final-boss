@@ -17,6 +17,7 @@ const publicRoutes = FlowRouter.group({
   name: 'public'
 });
 
+/*
 publicRoutes.route('/', {
   name: 'home',
   action () {
@@ -37,9 +38,10 @@ publicRoutes.route('/', {
     });
   },
 });
+*/
 
-publicRoutes.route('/login', {
-  name: 'login',
+publicRoutes.route('/', {
+  name: 'home',
   action() {
 
     if (Meteor.userId() && Roles.subscription.ready() && FlowRouter._initialized) {
