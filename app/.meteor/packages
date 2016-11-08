@@ -26,3 +26,5 @@ accounts-ui@1.1.9
 momentjs:moment
 alanning:roles
 kadira:flow-router
+accounts-password
+std:accounts-ui
