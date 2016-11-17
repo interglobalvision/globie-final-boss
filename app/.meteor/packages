@@ -28,3 +28,5 @@ alanning:roles
 kadira:flow-router
 accounts-password@1.3.2
 std:accounts-ui
+mdg:validated-method
+aldeed:simple-schema

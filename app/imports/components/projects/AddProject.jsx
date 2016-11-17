@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import { ProjectForm } from '/imports/components/projects/ProjectForm.jsx';
 import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
+import { addProject } from '/imports/api/projectsMethods.js';
 
 export class AddProject extends Component {
   constructor(props) {
@@ -29,6 +29,13 @@ export class AddProject extends Component {
     });
   }
 
+  cleanForm() {
+    this.setState({
+      name: '',
+      url: 'http://',
+    });
+  }
+
   onSubmitHandle(event) {
     event.preventDefault();
 
@@ -37,7 +44,14 @@ export class AddProject extends Component {
       url: this.state.url,
     };
 
-    console.log(project);
+    addProject.call(project,
+      (err, res) => {
+        if (err) {
+          console.error(err.error);
+        } else { 
+          this.cleanForm();
+        }
+      });
   }
 
   render() {
