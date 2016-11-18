@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { compose } from 'react-komposer';
 
-import { MainLayout } from '/imports/components/MainLayout.jsx';
+import { MainLayout } from '/imports/components/base/MainLayout.jsx';
 
 const composer = (props, onData) => {
 

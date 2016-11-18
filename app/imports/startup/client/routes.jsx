@@ -2,13 +2,6 @@ import React from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { mount } from 'react-mounter';
 
-import { PageFrontpage } from '/imports/components/pages/frontpage.jsx';
-import { Page401 } from '/imports/components/pages/page401.jsx';
-import { Page404 } from '/imports/components/pages/page404.jsx';
-
-import { AdminDashboard } from '/imports/components/admin/dashboard.jsx';
-
-
 import '/imports/startup/client/routes/public.jsx';
 import '/imports/startup/client/routes/projects.jsx';
 

@@ -2,8 +2,12 @@ import React from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { mount } from 'react-mounter';
 
+import { PageFrontpage } from '/imports/components/pages/Frontpage.jsx';
+import { Page401 } from '/imports/components/pages/Page401.jsx';
+import { Page404 } from '/imports/components/pages/Page404.jsx';
+
 import { MainContainer } from '/imports/containers/MainContainer.jsx';
-import { UserLogin } from '/imports/components/user/login.jsx';
+import { UserLogin } from '/imports/components/accounts/Login.jsx';
 
 // Public Routes
 const publicRoutes = FlowRouter.group({
