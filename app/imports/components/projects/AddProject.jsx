@@ -44,22 +44,27 @@ export class AddProject extends Component {
       url: this.state.url,
     };
 
-    addProject.call(project,
-      (err, res) => {
-        if (err) {
-          console.error(err.error);
-        } else { 
-          this.cleanForm();
-        }
-      });
+    addProject.call(project, (err, res) => {
+      if (err) {
+        console.error(err.error);
+      } else { 
+        this.cleanForm();
+      }
+    });
   }
 
   render() {
     return(
       <form onSubmit={this.onSubmitHandle}>
-        <SingleInput  inputType='text' title='Project Name' name='project-name-input' controlFunc={this.onNameChange} content={this.state.name} placeholder='Project name/title' />
-        <SingleInput  inputType='text' title='URL' name='project-url-input' controlFunc={this.onUrlChange} content={this.state.url} placeholder='URL' />
-        <input type="submit" value="Submit" />
+        <label className='pt-label pt-inline'>
+          Name
+          <input className='pt-input' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project name/title' />
+        </label>
+        <label className='pt-label pt-inline'>
+          URL
+          <input className='pt-input' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='URL' />
+        </label>
+        <button type='submit' className='pt-button pt-large'>Add Project</button>
       </form>
     );
   }
