@@ -104,13 +104,13 @@ export class AddProject extends Component {
       <form onSubmit={this.onSubmitHandle}>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-6'>
+          <div className='grid-item item-s-12 item-m-4'>
             <label className='grid-column margin-bottom-small'>
               Title
               <input className='pt-input margin-top-micro' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-6'>
+          <div className='grid-item item-s-12 item-m-4'>
             <label className='grid-column margin-bottom-small'>
               URL
               <input className='pt-input margin-top-micro' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='URL' />
@@ -119,13 +119,13 @@ export class AddProject extends Component {
         </div>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-6'>
+          <div className='grid-item item-s-12 item-m-4'>
             <label className='grid-column margin-bottom-small'>
               Client
               <input className='pt-input margin-top-micro' type='text' name='project-client-input' onChange={this.onClientChange} value={this.state.client} placeholder='Client' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-6 grid-row align-items-end margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-4 grid-row align-items-end margin-bottom-small'>
             <button className='pt-button margin-top-micro'>Add New Client</button>
           </div>
         </div>
@@ -166,7 +166,7 @@ export class AddProject extends Component {
         </div>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-6'>
+          <div className='grid-item item-s-12 item-m-4'>
             <button type='submit' className='pt-button pt-large'>Add Project</button>
           </div>
         </div>
