@@ -10,11 +10,21 @@ export class AddProject extends Component {
     this.state = {
       name: '',
       url: 'http://',
+      client: '',
+      days: 0,
+      rate: 0,
+      currency: 'MXN',
+      quote: 0,
     };
 
     this.onSubmitHandle = this.onSubmitHandle.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
     this.onUrlChange = this.onUrlChange.bind(this);
+    this.onClientChange = this.onClientChange.bind(this);
+    this.onDaysChange = this.onDaysChange.bind(this);
+    this.onRateChange = this.onRateChange.bind(this);
+    this.onCurrencyChange = this.onCurrencyChange.bind(this);
+    this.cleanForm = this.cleanForm.bind(this);
   }
 
   onNameChange(e) {
@@ -29,10 +39,41 @@ export class AddProject extends Component {
     });
   }
 
+  onClientChange(e) {
+    this.setState({
+      client: e.target.value,
+    });
+  }
+
+  onDaysChange(e) {
+    this.setState({
+      days: e.target.value,
+      quote: e.target.value * this.state.rate,
+    });
+  }
+
+  onRateChange(e) {
+    this.setState({
+      rate: e.target.value,
+      quote: e.target.value * this.state.days,
+    });
+  }
+
+  onCurrencyChange(e) {
+    this.setState({
+      currency: e.target.value,
+    });
+  }
+
   cleanForm() {
     this.setState({
       name: '',
       url: 'http://',
+      client: '',
+      days: 0,
+      rate: 0,
+      currency: 'MXN',
+      quote: 0,
     });
   }
 
@@ -42,6 +83,11 @@ export class AddProject extends Component {
     const project = {
       name: this.state.name,
       url: this.state.url,
+      client: this.state.client,
+      days: this.state.days,
+      rate: this.state.rate,
+      currency: this.state.currency,
+      quote: this.state.quote,
     };
 
     addProject.call(project, (err, res) => {
@@ -59,13 +105,13 @@ export class AddProject extends Component {
 
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label pt-inline'>
+            <label className='pt-label'>
               Title
               <input className='pt-input' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label pt-inline'>
+            <label className='pt-label'>
               URL
               <input className='pt-input' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='URL' />
             </label>
@@ -74,7 +120,7 @@ export class AddProject extends Component {
 
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label pt-inline'>
+            <label className='pt-label'>
               Client
               <input className='pt-input' type='text' name='project-client-input' onChange={this.onClientChange} value={this.state.client} placeholder='Client' />
             </label>
@@ -86,37 +132,45 @@ export class AddProject extends Component {
 
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label pt-inline'>
-              Country
-              <input className='pt-input' type='text' name='project-country-input' onChange={this.onCountryChange} value={this.state.country} placeholder='Country' />
-            </label>
-          </div>
-        </div>
-
-        <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label pt-inline'>
-              Quote time
-              <input className='pt-input' type='text' name='project-time-input' onChange={this.onTimeChange} value={this.state.time} placeholder='Time' />
+            <label className='pt-label'>
+              Quote Days
+              <input className='pt-input' type='text' name='project-time-input' onChange={this.onDaysChange} value={this.state.days} placeholder='Days' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label pt-inline'>
-              Quote rate
+            <label className='pt-label'>
+              Quote Rate
               <input className='pt-input' type='text' name='project-rate-input' onChange={this.onRateChange} value={this.state.rate} placeholder='Rate' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label pt-inline'>
-              Currency
-              <input className='pt-input' type='text' name='project-currency-input' onChange={this.onCurrencyChange} value={this.state.currency} placeholder='Currency' />
+            <label className='pt-label'>
+              Quote Currency
+              <select className='pt-input' name='project-currency-input' onChange={this.onCurrencyChange} value={this.state.currency}>
+                <option value='MXN'>MXN</option>
+                <option value='USD'>USD</option>
+                <option value='GBP'>GBP</option>
+                <option value='EUR'>EUR</option>
+              </select>
             </label>
           </div>
         </div>
 
         <div className='grid-row'>
-          <button type='submit' className='pt-button pt-large'>Add Project</button>
+          <div className='grid-item item-s-12 item-m-4'>
+            <label className='pt-label'>
+              <div className='pt-inline'>Total quote</div>
+              <input className='pt-input' type='text' name='project-total-client' value={this.state.quote} disabled='true'></input>
+            </label>
+          </div>
         </div>
+
+        <div className='grid-row'>
+          <div className='grid-item item-s-12 item-m-4'>
+            <button type='submit' className='pt-button pt-large'>Add Project</button>
+          </div>
+        </div>
+
       </form>
     );
   }
