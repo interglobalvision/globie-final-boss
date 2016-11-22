@@ -1,5 +1,4 @@
 import React from 'react';
-import '/node_modules/@blueprintjs/core/dist/blueprint.css';
 
 // import { Header } from '/imports/components/header.jsx';
 // import { Footer } from '/imports/components/footer.jsx';
