@@ -104,49 +104,49 @@ export class AddProject extends Component {
       <form onSubmit={this.onSubmitHandle}>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label'>
+          <div className='grid-item item-s-12 item-m-6'>
+            <label className='grid-column margin-bottom-small'>
               Title
-              <input className='pt-input' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
+              <input className='pt-input margin-top-micro' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label'>
+          <div className='grid-item item-s-12 item-m-6'>
+            <label className='grid-column margin-bottom-small'>
               URL
-              <input className='pt-input' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='URL' />
+              <input className='pt-input margin-top-micro' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='URL' />
             </label>
           </div>
         </div>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label'>
+          <div className='grid-item item-s-12 item-m-6'>
+            <label className='grid-column margin-bottom-small'>
               Client
-              <input className='pt-input' type='text' name='project-client-input' onChange={this.onClientChange} value={this.state.client} placeholder='Client' />
+              <input className='pt-input margin-top-micro' type='text' name='project-client-input' onChange={this.onClientChange} value={this.state.client} placeholder='Client' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-4'>
-            <button className='pt-button pt-large'>Add New Client</button>
+          <div className='grid-item item-s-12 item-m-6 grid-row align-items-end margin-bottom-small'>
+            <button className='pt-button margin-top-micro'>Add New Client</button>
           </div>
         </div>
 
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label'>
+            <label className='grid-column margin-bottom-small'>
               Quote Days
-              <input className='pt-input' type='text' name='project-time-input' onChange={this.onDaysChange} value={this.state.days} placeholder='Days' />
+              <input className='pt-input margin-top-micro' type='text' name='project-time-input' onChange={this.onDaysChange} value={this.state.days} placeholder='Days' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label'>
+            <label className='grid-column margin-bottom-small'>
               Quote Rate
-              <input className='pt-input' type='text' name='project-rate-input' onChange={this.onRateChange} value={this.state.rate} placeholder='Rate' />
+              <input className='pt-input margin-top-micro' type='text' name='project-rate-input' onChange={this.onRateChange} value={this.state.rate} placeholder='Rate' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label'>
+            <label className='grid-column margin-bottom-small'>
               Quote Currency
-              <select className='pt-input' name='project-currency-input' onChange={this.onCurrencyChange} value={this.state.currency}>
+              <select className='pt-input margin-top-micro' name='project-currency-input' onChange={this.onCurrencyChange} value={this.state.currency}>
                 <option value='MXN'>MXN</option>
                 <option value='USD'>USD</option>
                 <option value='GBP'>GBP</option>
@@ -158,15 +158,15 @@ export class AddProject extends Component {
 
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
-            <label className='pt-label'>
-              <div className='pt-inline'>Total quote</div>
-              <input className='pt-input' type='text' name='project-total-client' value={this.state.quote} disabled='true'></input>
+            <label className='grid-column margin-bottom-small'>
+              Total quote
+              <input className='pt-input margin-top-micro' type='text' name='project-total-client' value={this.state.quote} disabled='true'></input>
             </label>
           </div>
         </div>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
+          <div className='grid-item item-s-12 item-m-6'>
             <button type='submit' className='pt-button pt-large'>Add Project</button>
           </div>
         </div>
