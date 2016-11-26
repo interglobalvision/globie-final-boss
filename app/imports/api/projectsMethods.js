@@ -11,12 +11,41 @@ export const addProject = new ValidatedMethod({
     url: {
       type: SimpleSchema.RegEx.Url,
     },
+    client: {
+      type: String,
+    },
+    minDays: {
+      type: Number,
+    },
+    maxDays: {
+      type: Number,
+    },
+    rate: {
+      type: Number,
+    },
+    currency: {
+      type: String,
+    },
+    minQuote: {
+      type: Number,
+    },
+    maxQuote: {
+      type: Number,
+    },
   }).validator(),
 
-  run({name, url}) {
+  run({name, url, client, minDays, maxDays, rate, currency, minQuote, maxQuote}) {
+    // TODO user role check
     Projects.insert({
       name,
       url,
+      client,
+      minDays,
+      maxDays,
+      rate,
+      currency,
+      minQuote,
+      maxQuote,
     });
   }
 });
