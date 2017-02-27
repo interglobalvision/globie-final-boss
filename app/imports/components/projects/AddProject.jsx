@@ -256,7 +256,6 @@ export class AddProject extends Component {
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
             <button type='submit' className='pt-button pt-large'>Add Project</button>
-            <a type='submit' className='pt-button pt-large' onClick={this.cleanForm.bind(this)}>Reset Project</a>
           </div>
         </div>
 
