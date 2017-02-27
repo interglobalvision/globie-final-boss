@@ -3,22 +3,13 @@ import React, { Component } from 'react';
 import { EditableText } from '@blueprintjs/core';
 import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
 import { addProject } from '/imports/api/projectsMethods.js';
+import { ProjectSchema } from '/imports/schemas/ProjectSchema.js';
 
 export class AddProject extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      name: '',
-      url: 'http://',
-      client: '',
-      minDays: 0,
-      maxDays: 0,
-      rate: 0,
-      currency: 'MXN',
-      minQuote: 0,
-      maxQuote: 0,
-    };
+    this.state = this.getInitalState();
 
     this.onSubmitHandle = this.onSubmitHandle.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
@@ -29,6 +20,52 @@ export class AddProject extends Component {
     this.onRateChange = this.onRateChange.bind(this);
     this.onCurrencyChange = this.onCurrencyChange.bind(this);
     this.cleanForm = this.cleanForm.bind(this);
+  }
+
+  getInitalState() {
+    return {
+      name: '',
+      url:  '',
+      client: '',
+      minDays: 0,
+      maxDays: 0,
+      rate: 0,
+      currency: 'MXN',
+      minQuote: 0,
+      maxQuote: 0,
+      validationError: undefined,
+    };
+  }
+
+  getCurrentCleanState() {
+    return this.cleanObject({
+      name: this.state.name,
+      url: this.state.url,
+      client: this.state.client,
+      minDays: this.state.minDays,
+      maxDays: this.state.maxDays,
+      rate: this.state.rate,
+      currency: this.state.currency,
+      minQuote: this.state.minQuote,
+      maxQuote: this.state.maxQuote,
+    });
+  }
+
+  cleanObject(object) {
+    let cleanObject = Object.assign({}, object);
+    for (let property in object) {
+      if (object.hasOwnProperty(property)) {
+        let val = object[property];
+
+        if (val === 0 || val === '') {
+          cleanObject[property] = undefined;
+        } else {
+          cleanObject[property] = val;
+        }
+      }
+    }
+
+    return cleanObject;
   }
 
   calculateTotalQuote() {
@@ -57,7 +94,7 @@ export class AddProject extends Component {
   }
 
   onMinDaysChange(e) {
-    // this.calculateTotalQuote is being passes as a callback that executes 
+    // this.calculateTotalQuote is being passes as a callback that executes
     // after the state mutation has happened
     this.setState({
       minDays: parseInt(e.target.value),
@@ -65,7 +102,7 @@ export class AddProject extends Component {
   }
 
   onMaxDaysChange(e) {
-    // this.calculateTotalQuote is being passes as a callback that executes 
+    // this.calculateTotalQuote is being passes as a callback that executes
     // after the state mutation has happened
     this.setState({
       maxDays: parseInt(e.target.value),
@@ -73,7 +110,7 @@ export class AddProject extends Component {
   }
 
   onRateChange(e) {
-    // this.calculateTotalQuote is being passes as a callback that executes 
+    // this.calculateTotalQuote is being passes as a callback that executes
     // after the state mutation has happened
     this.setState({
       rate: parseInt(e.target.value),
@@ -88,41 +125,51 @@ export class AddProject extends Component {
     });
   }
 
+  validate(data) {
+    // Validate project data
+    ProjectSchema.validate(data);
+  }
+
   cleanForm() {
-    this.setState({
-      name: '',
-      url: 'http://',
-      client: '',
-      minDays: 0,
-      maxDays: 0,
-      rate: 0,
-      currency: 'MXN',
-      minQuote: 0,
-      maxQuote: 0,
-    });
+    this.setState(this.getInitalState());
   }
 
   onSubmitHandle(event) {
     event.preventDefault();
 
-    const project = {
-      name: this.state.name,
-      url: this.state.url,
-      client: this.state.client,
-      minDays: this.state.minDays,
-      maxDays: this.state.maxDays,
-      rate: this.state.rate,
-      currency: this.state.currency,
-      minQuote: this.state.minQuote,
-      maxQuote: this.state.maxQuote,
-    };
+    this.setState({
+      validationError: undefined,
+    });
 
-    addProject.call(project, (err, res) => {
+    let isValid = true;
+
+    const project = this.getCurrentCleanState();
+
+    try {
+      this.validate(project);
+    } catch(err) {
       if (err) {
-        console.error(err.error);
-      } else { 
-        this.cleanForm();
+        isValid = false;
+
+        this.setError(err);
       }
+    }
+
+    if (isValid) {
+      addProject.call(project, (err, res) => {
+        if (err) {
+          console.error(err.error);
+        } else {
+          this.cleanForm();
+        }
+      });
+    }
+  }
+
+  setError(err) {
+    debugger
+    this.setState({
+      validationError: err.reason,
     });
   }
 
@@ -133,14 +180,14 @@ export class AddProject extends Component {
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
             <label className='grid-column margin-bottom-small'>
-              Title
+              Name
               <input className='pt-input margin-top-micro' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4'>
             <label className='grid-column margin-bottom-small'>
               URL
-              <input className='pt-input margin-top-micro' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='URL' />
+              <input className='pt-input margin-top-micro' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='http://' />
             </label>
           </div>
         </div>
@@ -196,9 +243,20 @@ export class AddProject extends Component {
           </div>
         </div>
 
+        { this.state.validationError &&
+        <div className='grid-row'>
+          <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
+            <div className="pt-callout pt-intent-danger">
+              <h5>Validation Error</h5>
+              {this.state.validationError}
+            </div>
+          </div>
+        </div> }
+
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
             <button type='submit' className='pt-button pt-large'>Add Project</button>
+            <a type='submit' className='pt-button pt-large' onClick={this.cleanForm.bind(this)}>Reset Project</a>
           </div>
         </div>
 
