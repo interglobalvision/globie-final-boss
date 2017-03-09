@@ -1,0 +1,19 @@
+{
+  "applicationName": "Globie Final Boss",
+  "applicationSafeName": "globieFinalBoss",
+
+  "adminEmail": "globie@interglobal.vision",
+  "adminPassword": "",
+
+  "kadira": {
+    "appId": "xxx",
+    "appSecret": "xxx"
+  },
+
+  "public": {
+    "dateFormat":"DD-MM-YYYY HH:mm",
+    "analyticsSettings": {
+      "Google Analytics": {"trackingId":"UA-XXXXXXXX"}
+    }
+  }
+}
