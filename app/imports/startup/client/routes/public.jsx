@@ -17,6 +17,17 @@ const publicRoutes = FlowRouter.group({
 publicRoutes.route('/', {
   name: 'home',
   action() {
+    if (!Meteor.userId()) {
+      return FlowRouter.go('/login');
+    } else {
+      return FlowRouter.go('/dash/main');
+    }
+  },
+});
+
+publicRoutes.route('/login', {
+  name: 'login',
+  action() {
     mount(MainContainer, {
       content: <UserLogin />,
     });
@@ -27,7 +38,7 @@ publicRoutes.route('/logout', {
   name: 'logout',
   action() {
     Meteor.logout(() => {
-      FlowRouter.go('/');
+      FlowRouter.go('/login');
     });
   },
 });
