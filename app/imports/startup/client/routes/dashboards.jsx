@@ -12,7 +12,7 @@ const dashboardRoutes = FlowRouter.group({
   prefix: '/dashboard',
 });
 
-dashboardRoutes.route('/main', {
+dashboardRoutes.route('/', {
   name: 'mainDashboard',
   action() {
     mount(MainContainer, {

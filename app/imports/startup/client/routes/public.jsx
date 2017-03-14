@@ -17,6 +17,10 @@ const publicRoutes = FlowRouter.group({
 publicRoutes.route('/', {
   name: 'home',
   action() {
+    if (Meteor.userId()) {
+      return FlowRouter.go('/dashboard');
+    }
+
     mount(MainContainer, {
       content: <UserLogin />,
     });
