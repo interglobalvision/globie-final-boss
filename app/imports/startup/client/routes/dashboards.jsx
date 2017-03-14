@@ -9,7 +9,7 @@ import { MainDashboard } from '/imports/components/dashboards/MainDashboard.jsx'
 // Dashboard Routes
 const dashboardRoutes = FlowRouter.group({
   name: 'dashboards',
-  prefix: '/dash',
+  prefix: '/dashboard',
 });
 
 dashboardRoutes.route('/main', {

@@ -8,7 +8,7 @@ import { AddProject } from '/imports/components/projects/AddProject.jsx';
 
 const projectRoutes = FlowRouter.group({
   name: 'projects',
-  prefix: '/projects',
+  prefix: '/project',
 });
 
 projectRoutes.route('/add', {
@@ -19,4 +19,3 @@ projectRoutes.route('/add', {
     });
   },
 });
-
