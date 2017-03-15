@@ -4,10 +4,10 @@ export class ListProjects extends Component {
 
   render() {
     return(
-      <section id="projects-list">
+      <section id="projects-list" className="margin-bottom-basic">
         <div className="grid-row">
           <section className="grid-item item-s-12">
-            <h3>Projects:</h3>
+            <h4 className="margin-bottom-tiny">Projects:</h4>
           </section>
         </div>
         {this.props.projects.map((project, key) => (
@@ -22,7 +22,7 @@ export class ListProjects extends Component {
 export class ListProject extends Component {
   render() {
     return(
-      <div className="grid-row">
+      <div className="grid-row margin-bottom-small">
         <div className="grid-item item-s-3">
           {this.props.project.name}
         </div>

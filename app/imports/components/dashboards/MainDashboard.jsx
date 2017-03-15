@@ -39,7 +39,7 @@ export class MainDashboard extends Component {
   render() {
     return(
       <section id="dashboard-main">
-        <div className="grid-row">
+        <div className="grid-row margin-bottom-basic">
           <section className="grid-item item-s-12">
             <h3>{this.greeting()}</h3>
           </section>
@@ -47,10 +47,9 @@ export class MainDashboard extends Component {
         <ListProjectsContainer />
         <div className="grid-row">
           <section className="grid-item item-s-12">
-            <h3>Actions</h3>
-            <ul>
-              <li><a href={FlowRouter.path('addProject')} className="button">Add Project</a></li>
-            </ul>
+            <div className="pt-button-group">
+              <a href={FlowRouter.path('addProject')} className="pt-button">Add Project</a>
+            </div>
           </section>
         </div>
       </section>
