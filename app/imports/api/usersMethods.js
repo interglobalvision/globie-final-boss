@@ -25,7 +25,7 @@ export const addWorker = new ValidatedMethod({
         throw new Meteor.Error('Users.methods.addWorker.already-exists', 'User email ' + email + ' already exists.');
       }
 
-      Accounts.createUser({
+      let newUser = Accounts.createUser({
         username: username,
         email: email,
         profile: {
@@ -33,9 +33,7 @@ export const addWorker = new ValidatedMethod({
         }
       });
 
-      let newUser = Accounts.findUserByEmail(email);
-
-      Roles.addUsersToRoles(newUser._id, 'worker');
+      Roles.addUsersToRoles(newUser, 'worker');
     }
   }
 });
