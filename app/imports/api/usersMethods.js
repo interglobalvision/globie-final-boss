@@ -10,15 +10,14 @@ export const addWorker = new ValidatedMethod({
   run({username, name, email}) {
     if (Meteor.isServer) {
 
-      debugger;
       // Check if user is logged in
-      if (!this.userId) {
+      if (!Meteor.userId()) {
         throw new Meteor.Error('Users.methods.addWorker.not-logged-in', 'Must be logged in to create a Worker.');
       }
 
       // Check if user is admin
-      if (!Roles.userIsInRole(this.userId, 'admin')) {
-        throw new Meteor.Error('Users.methods.addWorker.not-allowed', 'Must be admin to do this.');
+      if (!Roles.userIsInRole(Meteor.userId(), 'admin')) {
+        throw new Meteor.Error('Users.methods.addWorker.not-allowed', 'Must be Admin to do this.');
       }
 
       // Check if user email exists
@@ -37,6 +36,31 @@ export const addWorker = new ValidatedMethod({
       let newUser = Accounts.findUserByEmail(email);
 
       Roles.addUsersToRoles(newUser._id, 'worker');
+    }
+  }
+});
+
+export const removeWorker = new ValidatedMethod({
+  name: 'Users.methods.removeWorker',
+  validate: new SimpleSchema({
+    workerId: {
+      type: String
+    },
+  }).validator(),
+
+  run({workerId}) {
+    if (Meteor.isServer) {
+      // Check if user is logged in
+      if (!Meteor.userId()) {
+        throw new Meteor.Error('Users.methods.removeWorker.not-logged-in', 'Must be logged in to remove a Worker.');
+      }
+
+      // Check if user is admin
+      if (!Roles.userIsInRole(Meteor.userId(), 'admin')) {
+        throw new Meteor.Error('Users.methods.removeWorker.not-allowed', 'Must be Admin to do this.');
+      }
+
+      Meteor.users.remove(workerId);
     }
   }
 });
