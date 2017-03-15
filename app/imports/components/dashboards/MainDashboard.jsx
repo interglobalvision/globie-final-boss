@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { ListWorkersContainer } from '/imports/containers/ListWorkersContainer.jsx';
 import { AddWorker } from '/imports/components/workers/AddWorker.jsx';
 
 export class MainDashboard extends Component {
@@ -11,6 +12,9 @@ export class MainDashboard extends Component {
             <h1>Dashboard</h1>
           </div>
         </div>
+
+        <ListWorkersContainer />
+
         <AddWorker />
       </section>
     );
