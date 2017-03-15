@@ -90,8 +90,6 @@ export class AddWorker extends Component {
 
     const worker = this.getCurrentCleanState();
 
-    debugger;
-
     try {
       this.validate(worker);
     } catch(err) {
