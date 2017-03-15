@@ -4,7 +4,6 @@ class ProjectsCollection extends Mongo.Collection {
 	insert(doc, callback) {
 		doc.createdAt = doc.createdAt || new Date();
 		doc.updatedAt = doc.updatedAt || new Date();
-		doc.userId = Meteor.userId();
 
 		return super.insert(doc, callback);
 	}
