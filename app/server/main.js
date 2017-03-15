@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import '/imports/startup/server/publications.jsx';
 import '/imports/startup/server/accounts.jsx';
 
 // Methods
