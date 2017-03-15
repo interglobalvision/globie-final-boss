@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import { ListProjects } from '/imports/components/projects/ListProjects.jsx';
+import { ListProjectsContainer } from '/imports/containers/projects/ListProjectsContainer.jsx';
 
 export class MainDashboard extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ export class MainDashboard extends Component {
             <h3>{this.greeting()}</h3>
           </section>
         </div>
-        <ListProjects />
+        <ListProjectsContainer />
         <div className="grid-row">
           <section className="grid-item item-s-12">
             <h3>Actions</h3>

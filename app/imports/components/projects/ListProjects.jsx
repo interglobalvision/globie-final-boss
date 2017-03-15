@@ -4,12 +4,38 @@ export class ListProjects extends Component {
 
   render() {
     return(
-      <div className="grid-row">
-        <section className="grid-item item-s-12">
-          <h3>*PROJECT LIST COMPONENT*</h3>
-        </section>
-      </div>
+      <section id="projects-list">
+        <div className="grid-row">
+          <section className="grid-item item-s-12">
+            <h3>Projects:</h3>
+          </section>
+        </div>
+        {this.props.projects.map((project, key) => (
+          <ListProject project={project} key={project._id} />
+        ))}
+      </section>
     )
   }
 
+}
+
+export class ListProject extends Component {
+  render() {
+    return(
+      <div className="grid-row">
+        <div className="grid-item item-s-3">
+          {this.props.project.name}
+        </div>
+        <div className="grid-item item-s-4">
+          {this.props.project.url}
+        </div>
+        <div className="grid-item item-s-2">
+          {this.props.project.client}
+        </div>
+        <div className="grid-item item-s-3">
+          *deadline*
+        </div>
+      </div>
+    )
+  }
 }
