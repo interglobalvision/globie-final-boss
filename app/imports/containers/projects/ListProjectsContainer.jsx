@@ -32,7 +32,7 @@ function reactiveMapper(props, onData) {
     let projects = Projects.find(
       {},
       { sort: {
-        createdAt: 1,
+        createdAt: -1,
       } }).fetch();
 
     onData(null, { projects });
