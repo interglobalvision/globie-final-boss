@@ -44,7 +44,7 @@ export class MainDashboard extends Component {
       <section id='dashboard-main'>
         <div className='grid-row margin-bottom-basic'>
           <section className='grid-item item-s-12'>
-            <h3>{this.greeting()}</h3>
+            <h1>{this.greeting()}</h1>
           </section>
         </div>
         <ListProjectsContainer />
