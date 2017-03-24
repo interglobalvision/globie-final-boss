@@ -17,7 +17,7 @@ export class RemoveWorker extends Component {
 
   render() {
     return (
-      <button className="pt-button pt-large" onClick={this.onRemoveWorker}>
+      <button className='pt-button' onClick={this.onRemoveWorker}>
         Remove Worker
       </button>
     );
