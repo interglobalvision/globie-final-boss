@@ -24,15 +24,10 @@ function reactiveMapper(props, onData) {
 
   if (Meteor.subscribe('users.workers').ready()) {
 
-    const user = !!Meteor.user() ? Meteor.user() : null;
+    let workers = Roles.getUsersInRole('worker');
 
-    if (Roles.userIsInRole(user._id, [ 'admin' ])) {
+    onData(null, { workers });
 
-      let workers = Roles.getUsersInRole('worker');
-
-      onData(null, { workers });
-
-    }
   };
 
 }
