@@ -5,7 +5,7 @@ import { RemoveWorker } from '/imports/components/workers/RemoveWorker.jsx';
 export class ListWorkersItem extends Component {
   render() {
     return (
-      <div className='grid-row'>
+      <div className='grid-row margin-bottom-small'>
         <div className='grid-item item-s-12 item-m-4'>
           {this.props.worker.username}
         </div>

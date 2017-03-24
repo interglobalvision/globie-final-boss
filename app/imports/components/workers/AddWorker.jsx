@@ -121,7 +121,7 @@ export class AddWorker extends Component {
   render() {
     return(
       <form onSubmit={this.onSubmitHandle}>
-        <div className='grid-row'>
+        <div className='grid-row margin-bottom-small'>
           <div className='grid-item item-s-12'>
             <h2>Add Worker</h2>
           </div>
@@ -153,7 +153,7 @@ export class AddWorker extends Component {
         { this.state.validationError &&
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
-            <div className="pt-callout pt-intent-danger">
+            <div className='pt-callout pt-intent-danger'>
               <h5>Validation Error</h5>
               {this.state.validationError}
             </div>
@@ -162,7 +162,7 @@ export class AddWorker extends Component {
 
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
-            <button type='submit' className='pt-button pt-large'>Add Worker</button>
+            <button type='submit' className='pt-button'>Add Worker</button>
           </div>
         </div>
       </form>

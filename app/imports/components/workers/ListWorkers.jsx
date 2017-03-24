@@ -11,8 +11,8 @@ export class ListWorkers extends Component {
   render() {
     if (this.props.workers) {
       return(
-        <section id="workers">
-          <div className='grid-row'>
+        <section id='workers' className='margin-bottom-basic'>
+          <div className='grid-row margin-bottom-small'>
             <div className='grid-item item-s-12'>
               <h2>Workers</h2>
             </div>
