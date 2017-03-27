@@ -23,6 +23,8 @@ export class ListWorkers extends Component {
           ))}
         </section>
       );
+    } else {
+      return null;
     }
   }
 };
