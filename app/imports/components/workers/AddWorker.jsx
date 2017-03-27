@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import { EditableText } from '@blueprintjs/core';
 import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
 import { addWorker } from '/imports/api/usersMethods.js';
 import { WorkerSchema } from '/imports/schemas/WorkerSchema.js';
