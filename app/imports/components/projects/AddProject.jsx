@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import { EditableText } from '@blueprintjs/core';
 import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
 import { addProject } from '/imports/api/projectsMethods.js';
 import { ProjectSchema } from '/imports/schemas/ProjectSchema.js';
