@@ -13,5 +13,8 @@
     "react-dom": "^15.3.2",
     "react-komposer": "^2.0.0",
     "react-mounter": "^1.2.0"
+  },
+  "devDependencies": {
+    "enzyme": "^2.7.1"
   }
 }

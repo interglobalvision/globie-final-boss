@@ -29,3 +29,5 @@ accounts-password@1.3.4
 std:accounts-ui
 mdg:validated-method
 aldeed:simple-schema
+dispatch:mocha-browser
+practicalmeteor:mocha

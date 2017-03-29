@@ -29,6 +29,7 @@ export const addProject = new ValidatedMethod({
       currency,
       minQuote,
       maxQuote,
+      userId: this.userId,
     });
   }
 });
