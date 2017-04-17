@@ -7,7 +7,7 @@ export const addProject = new ValidatedMethod({
   name: 'Projects.methods.add',
   validate: ProjectSchema.validator(),
 
-  run({name, url, client, minDays, maxDays, rate, currency, minQuote, maxQuote}) {
+  run({name, url, customer, minDays, maxDays, rate, currency, minQuote, maxQuote}) {
 
     // Check if user is logged in
     if (!this.userId) {
@@ -22,7 +22,7 @@ export const addProject = new ValidatedMethod({
     Projects.insert({
       name,
       url,
-      client,
+      customer,
       minDays,
       maxDays,
       rate,
