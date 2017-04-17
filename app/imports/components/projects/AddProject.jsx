@@ -247,13 +247,13 @@ export class AddProject extends Component {
           <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
             <label className='grid-column'>
               Name
-              <input className='pt-input margin-top-micro' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
+              <input className='pt-input margin-top-micro' type='text' name='project-name-input' autoComplete='off' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
             <label className='grid-column'>
               URL
-              <input className='pt-input margin-top-micro' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='http://' />
+              <input className='pt-input margin-top-micro' type='text' name='project-url-input' autoComplete='off' onChange={this.onUrlChange} value={this.state.url} placeholder='http://' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
