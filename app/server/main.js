@@ -6,6 +6,7 @@ import '/imports/startup/server/accounts.jsx';
 // Methods
 
 import '/imports/api/projectsMethods.js';
+import '/imports/api/customersMethods.js';
 import '/imports/api/usersMethods.js';
 
 Meteor.startup(() => {
