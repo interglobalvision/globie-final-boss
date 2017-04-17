@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import smartSearch from 'smart-search';
+import _ from 'lodash';
 
 import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
 import { addProject } from '/imports/api/projectsMethods.js';
 import { ProjectSchema } from '/imports/schemas/ProjectSchema.js';
+
+import { Customers } from '/imports/collections/customers.js';
+import { addCustomer } from '/imports/api/customersMethods.js';
 
 export class AddProject extends Component {
   constructor(props) {
@@ -14,6 +19,9 @@ export class AddProject extends Component {
     this.onNameChange = this.onNameChange.bind(this);
     this.onUrlChange = this.onUrlChange.bind(this);
     this.onCustomerChange = this.onCustomerChange.bind(this);
+    this.onCustomerFocus = this.onCustomerFocus.bind(this);
+    this.onCustomerBlur = this.onCustomerBlur.bind(this);
+    this.onCustomerClick = this.onCustomerClick.bind(this);
     this.onMinDaysChange = this.onMinDaysChange.bind(this);
     this.onMaxDaysChange = this.onMaxDaysChange.bind(this);
     this.onRateChange = this.onRateChange.bind(this);
@@ -32,6 +40,8 @@ export class AddProject extends Component {
       currency: 'MXN',
       minQuote: 0,
       maxQuote: 0,
+      customerResults: {},
+      customerFocus: false,
       validationError: undefined,
     };
   }
@@ -87,8 +97,50 @@ export class AddProject extends Component {
   }
 
   onCustomerChange(e) {
+    if (this.props.customers) {
+      this.setCustomerResults(e.target.value);
+    }
+
     this.setState({
       customer: e.target.value,
+    });
+  }
+
+  onCustomerFocus() {
+    this.setState({
+      customerFocus: true,
+    });
+  }
+
+  onCustomerBlur() {
+    var _this = this;
+
+    setTimeout(function() {
+      _this.setState({
+        customerFocus: false,
+      });
+    }, 100);
+  }
+
+  setCustomerResults(query) {
+    let results = smartSearch(this.props.customers, query, {name: true});
+
+    let customerResults = {};
+
+    if (results !== undefined) {
+      customerResults = results.map((customer) =>
+        <li className='pt-menu-item' onClick={this.onCustomerClick}>{customer.entry.name}</li>
+      );
+    }
+
+    this.setState({
+      customerResults: customerResults,
+    });
+  }
+
+  onCustomerClick(e) {
+    this.setState({
+      customer: e.target.firstChild.nodeValue,
     });
   }
 
@@ -133,6 +185,16 @@ export class AddProject extends Component {
     this.setState(this.getInitalState());
   }
 
+  callAddProject(project) {
+    addProject.call(project, (err, res) => {
+      if (err) {
+        console.error(err.error);
+      } else {
+        this.cleanForm();
+      }
+    });
+  }
+
   onSubmitHandle(event) {
     event.preventDefault();
 
@@ -155,18 +217,23 @@ export class AddProject extends Component {
     }
 
     if (isValid) {
-      addProject.call(project, (err, res) => {
-        if (err) {
-          console.error(err.error);
-        } else {
-          this.cleanForm();
-        }
-      });
+      if (_.findIndex(this.props.customers, { name: project.customer }) === -1) {
+        let customer = { name: project.customer };
+
+        addCustomer.call(customer, (err, res) => {
+          if (err) {
+            console.error(err.error);
+          } else {
+            this.callAddProject(project);
+          }
+        });
+      } else {
+        this.callAddProject(project);
+      }
     }
   }
 
   setError(err) {
-    debugger
     this.setState({
       validationError: err.reason,
     });
@@ -177,53 +244,56 @@ export class AddProject extends Component {
       <form onSubmit={this.onSubmitHandle}>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
+            <label className='grid-column'>
               Name
               <input className='pt-input margin-top-micro' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
+            <label className='grid-column'>
               URL
               <input className='pt-input margin-top-micro' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='http://' />
             </label>
           </div>
-        </div>
-
-        <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
+            <label className='grid-column'>
               Customer
-              <input className='pt-input margin-top-micro' type='text' name='project-customer-input' onChange={this.onCustomerChange} value={this.state.customer} placeholder='Customer' />
+              <input className='pt-input margin-top-micro' type='text' name='project-customer-input' autoComplete='off' onChange={this.onCustomerChange} onFocus={this.onCustomerFocus} onBlur={this.onCustomerBlur} value={this.state.customer} placeholder='Customer' />
             </label>
-          </div>
-          <div className='grid-item item-s-12 item-m-4 grid-row align-items-end margin-bottom-small'>
-            <button className='pt-button margin-top-micro'>Add New Customer</button>
+            {this.state.customerResults.length > 0 && this.state.customerFocus &&
+            <div id='customer-search-holder'>
+              <div id='customer-search-results' className='pt-popover pt-minimal'>
+                <div className='pt-popover-content'>
+                  <ul className='pt-menu'>{this.state.customerResults}</ul>
+                </div>
+              </div>
+            </div>
+            }
           </div>
         </div>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Days (min)
               <input className='pt-input margin-top-micro' type='number' name='project-time-min-input' onChange={this.onMinDaysChange} value={this.state.minDays} placeholder='Min' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Days (max)
               <input className='pt-input margin-top-micro' type='number' name='project-time-max-input' onChange={this.onMaxDaysChange} value={this.state.maxDays} placeholder='Max' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Rate
               <input className='pt-input margin-top-micro' type='number' name='project-rate-input' onChange={this.onRateChange} value={this.state.rate} placeholder='Rate' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Currency
               <select className='pt-input margin-top-micro' name='project-currency-input' onChange={this.onCurrencyChange} value={this.state.currency}>
                 <option value='MXN'>MXN</option>
