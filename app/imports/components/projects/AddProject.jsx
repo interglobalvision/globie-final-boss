@@ -13,7 +13,7 @@ export class AddProject extends Component {
     this.onSubmitHandle = this.onSubmitHandle.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
     this.onUrlChange = this.onUrlChange.bind(this);
-    this.onClientChange = this.onClientChange.bind(this);
+    this.onCustomerChange = this.onCustomerChange.bind(this);
     this.onMinDaysChange = this.onMinDaysChange.bind(this);
     this.onMaxDaysChange = this.onMaxDaysChange.bind(this);
     this.onRateChange = this.onRateChange.bind(this);
@@ -25,7 +25,7 @@ export class AddProject extends Component {
     return {
       name: '',
       url:  '',
-      client: '',
+      customer: '',
       minDays: 0,
       maxDays: 0,
       rate: 0,
@@ -40,7 +40,7 @@ export class AddProject extends Component {
     return this.cleanObject({
       name: this.state.name,
       url: this.state.url,
-      client: this.state.client,
+      customer: this.state.customer,
       minDays: this.state.minDays,
       maxDays: this.state.maxDays,
       rate: this.state.rate,
@@ -86,9 +86,9 @@ export class AddProject extends Component {
     });
   }
 
-  onClientChange(e) {
+  onCustomerChange(e) {
     this.setState({
-      client: e.target.value,
+      customer: e.target.value,
     });
   }
 
@@ -194,12 +194,12 @@ export class AddProject extends Component {
         <div className='grid-row'>
           <div className='grid-item item-s-12 item-m-4'>
             <label className='grid-column margin-bottom-small'>
-              Client
-              <input className='pt-input margin-top-micro' type='text' name='project-client-input' onChange={this.onClientChange} value={this.state.client} placeholder='Client' />
+              Customer
+              <input className='pt-input margin-top-micro' type='text' name='project-customer-input' onChange={this.onCustomerChange} value={this.state.customer} placeholder='Customer' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-4 grid-row align-items-end margin-bottom-small'>
-            <button className='pt-button margin-top-micro'>Add New Client</button>
+            <button className='pt-button margin-top-micro'>Add New Customer</button>
           </div>
         </div>
 
