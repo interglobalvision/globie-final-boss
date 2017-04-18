@@ -37,7 +37,7 @@ if (Meteor.isServer) {
         const newProject = {
           name: 'Project Name',
           url: 'http://project.com',
-          client: 'Client Name',
+          customer: 'Customer Name',
           minDays: 1,
           maxDays: 2,
           rate: 4000,
@@ -65,7 +65,7 @@ if (Meteor.isServer) {
         const newProject = {
           name: 'Project Name',
           url: 'http://project.com',
-          client: 'Client Name',
+          customer: 'Customer Name',
           minDays: 1,
           maxDays: 2,
           rate: 4000,
