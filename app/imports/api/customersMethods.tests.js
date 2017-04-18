@@ -83,13 +83,11 @@ if (Meteor.isServer) {
           name: 'Customer Name',
         };
 
+        // Run the method with `this` set to the fake invocation
         Customers.insert(newCustomer);
 
-        // Run the method with `this` set to the fake invocation
-        addCustomer.apply({ userId }, [newCustomer]);
-
         // Verify that the method does what we expected
-        expect(addCustomer.apply.bind({}, [newCustomer])).to.throw(Error);
+        expect(addCustomer.apply.bind({ userId }, [newCustomer])).to.throw(Error);
 
       });
     });
