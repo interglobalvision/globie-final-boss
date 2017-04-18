@@ -19,6 +19,10 @@ export const addCustomer = new ValidatedMethod({
       throw new Meteor.Error('Customers.methods.insert.not-allowed', 'Must be admin to do this.');
     }
 
+    if (Customers.findOne({'name': name})) {
+      throw new Meteor.Error('Customers.methods.insert.exists', 'Customer name already exists.');
+    }
+
     Customers.insert({
       name,
     });
