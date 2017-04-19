@@ -11,7 +11,7 @@ if (Meteor.isServer) {
     describe('methods', () => {
 
       beforeEach(() => {
-        // Delete all Projects
+        // Delete all Customers
         Customers.remove({});
 
         // Delete all users
@@ -29,7 +29,7 @@ if (Meteor.isServer) {
         // Add admin user to `admin` role
         Roles.addUsersToRoles(userId, 'admin');
 
-        // Find the internal implementation of the Projects add method so we can
+        // Find the internal implementation of the Customers add method so we can
         // test it in isolation
         const addCustomer = Meteor.server.method_handlers['Customers.methods.add'];
 
@@ -49,7 +49,7 @@ if (Meteor.isServer) {
       });
 
       it('not logged user can\'t add new project', () => {
-        // Find the internal implementation of the Projects add method so we can
+        // Find the internal implementation of the Customers add method so we can
         // test it in isolation
         const addCustomer = Meteor.server.method_handlers['Customers.methods.add'];
 
@@ -74,7 +74,7 @@ if (Meteor.isServer) {
         // Add admin user to `admin` role
         Roles.addUsersToRoles(userId, 'admin');
 
-        // Find the internal implementation of the Projects add method so we can
+        // Find the internal implementation of the Customers add method so we can
         // test it in isolation
         const addCustomer = Meteor.server.method_handlers['Customers.methods.add'];
 
