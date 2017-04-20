@@ -107,6 +107,7 @@ export class AddProject extends Component {
   }
 
   onCustomerFocus() {
+    this.clearCustomerTimer();
     this.setState({
       customerFocus: true,
     });
@@ -115,11 +116,19 @@ export class AddProject extends Component {
   onCustomerBlur() {
     var _this = this;
 
-    setTimeout(function() {
+    this.customerTimer = setTimeout(function() {
+      _this.clearCustomerTimer();
       _this.setState({
         customerFocus: false,
       });
     }, 100);
+  }
+
+  clearCustomerTimer() {
+    if(typeof this.customerTimer == "number") {
+      clearTimeout(this.customerTimer);
+      delete this.customerTimer;
+    }
   }
 
   setCustomerResults(query) {
@@ -128,9 +137,7 @@ export class AddProject extends Component {
     let customerResults = {};
 
     if (results !== undefined) {
-      customerResults = results.map((customer) =>
-        <li className='pt-menu-item' onClick={this.onCustomerClick}>{customer.entry.name}</li>
-      );
+      customerResults = results;
     }
 
     this.setState({
@@ -269,7 +276,11 @@ export class AddProject extends Component {
             <div id='customer-search-holder'>
               <div id='customer-search-results' className='pt-popover pt-minimal'>
                 <div className='pt-popover-content'>
-                  <ul className='pt-menu'>{this.state.customerResults}</ul>
+                  <ul className='pt-menu'>
+                    {this.state.customerResults.map((customer) => {
+                      return <li className='pt-menu-item' onClick={this.onCustomerClick} key={customer.entry._id}>{customer.entry.name}</li>;
+                    })}
+                  </ul>
                 </div>
               </div>
             </div>
