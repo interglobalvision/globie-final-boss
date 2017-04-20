@@ -5,6 +5,9 @@ export let ProjectSchema = new SimpleSchema({
   url: {
     type: SimpleSchema.RegEx.Url,
   },
+  customerId: {
+    type: String,
+  },
   customer: {
     type: String,
   },

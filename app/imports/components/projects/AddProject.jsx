@@ -217,17 +217,21 @@ export class AddProject extends Component {
     }
 
     if (isValid) {
-      if (_.findIndex(this.props.customers, { name: project.customer }) === -1) {
+      let customerIndex = _.findIndex(this.props.customers, { name: project.customer });
+
+      if (customerIndex === -1) {
         let customer = { name: project.customer };
 
-        addCustomer.call(customer, (err, res) => {
+        let customerId = addCustomer.call(customer, (err, res) => {
           if (err) {
             console.error(err.error);
           } else {
+            project.customerId = customerId;
             this.callAddProject(project);
           }
         });
       } else {
+        project.customerId = this.props.customers[customerIndex]._id;
         this.callAddProject(project);
       }
     }
@@ -277,13 +281,13 @@ export class AddProject extends Component {
           <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
             <label className='grid-column'>
               Quote Days (min)
-              <input className='pt-input margin-top-micro' type='number' name='project-time-min-input' onChange={this.onMinDaysChange} value={this.state.minDays} placeholder='Min' />
+              <input className='pt-input margin-top-micro' type='number' name='project-time-min-input' onChange={this.onMinDaysChange} value={this.state.minDays} placeholder='Min' min='1' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
             <label className='grid-column'>
               Quote Days (max)
-              <input className='pt-input margin-top-micro' type='number' name='project-time-max-input' onChange={this.onMaxDaysChange} value={this.state.maxDays} placeholder='Max' />
+              <input className='pt-input margin-top-micro' type='number' name='project-time-max-input' onChange={this.onMaxDaysChange} value={this.state.maxDays} placeholder='Max' min='1' />
             </label>
           </div>
           <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
