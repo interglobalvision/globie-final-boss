@@ -6,7 +6,6 @@ import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
 import { addProject } from '/imports/api/projectsMethods.js';
 import { ProjectSchema } from '/imports/schemas/ProjectSchema.js';
 
-import { Customers } from '/imports/collections/customers.js';
 import { addCustomer } from '/imports/api/customersMethods.js';
 
 export class AddProject extends Component {
@@ -34,6 +33,7 @@ export class AddProject extends Component {
       name: '',
       url:  '',
       customer: '',
+      customerId: '',
       minDays: 0,
       maxDays: 0,
       rate: 0,
@@ -51,6 +51,7 @@ export class AddProject extends Component {
       name: this.state.name,
       url: this.state.url,
       customer: this.state.customer,
+      customerId: this.state.customerId,
       minDays: this.state.minDays,
       maxDays: this.state.maxDays,
       rate: this.state.rate,
@@ -192,19 +193,7 @@ export class AddProject extends Component {
     this.setState(this.getInitalState());
   }
 
-  callAddProject(project) {
-    addProject.call(project, (err, res) => {
-      if (err) {
-        console.error(err.error);
-      } else {
-        this.cleanForm();
-      }
-    });
-  }
-
-  onSubmitHandle(event) {
-    event.preventDefault();
-
+  validateProject() {
     this.setState({
       validationError: undefined,
     });
@@ -224,23 +213,48 @@ export class AddProject extends Component {
     }
 
     if (isValid) {
-      let customerIndex = _.findIndex(this.props.customers, { name: project.customer });
+      addProject.call(project, (err, res) => {
+        if (err) {
+          console.error(err.error);
+        } else {
+          this.cleanForm();
+        }
+      });
+    }
+  }
 
-      if (customerIndex === -1) {
-        let customer = { name: project.customer };
+  onSubmitHandle(event) {
+    event.preventDefault();
 
-        let customerId = addCustomer.call(customer, (err, res) => {
-          if (err) {
-            console.error(err.error);
-          } else {
-            project.customerId = customerId;
-            this.callAddProject(project);
-          }
-        });
-      } else {
-        project.customerId = this.props.customers[customerIndex]._id;
-        this.callAddProject(project);
-      }
+    let customerIndex = _.findIndex(this.props.customers, { name: this.state.customer });
+
+    if (customerIndex === -1) {
+      // Customer does not exist in props array of customers
+      let customer = { name: this.state.customer };
+
+      addCustomer.call(customer, (err, res) => {
+        if (err) {
+          console.error(err.error);
+        } else {
+          this.setState({
+            // set customer ID from method return value
+            customerId: res,
+          }, () => {
+            // after state set, validate project
+            this.validateProject();
+          });
+        }
+      });
+
+    } else {
+      // Customer exists
+      this.setState({
+        // set customer ID from array of customers in props
+        customerId: this.props.customers[customerIndex]._id,
+      }, () => {
+        // after state set, validate project
+        this.validateProject();
+      });
     }
   }
 
