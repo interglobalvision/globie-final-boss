@@ -23,7 +23,7 @@ export const addCustomer = new ValidatedMethod({
       throw new Meteor.Error('Customers.methods.insert.exists', 'Customer name already exists.');
     }
 
-    Customers.insert({
+    return Customers.insert({
       name,
     });
   }
