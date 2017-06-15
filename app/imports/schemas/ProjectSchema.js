@@ -7,6 +7,7 @@ export let ProjectSchema = new SimpleSchema({
   },
   customerId: {
     type: String,
+    optional: true,
   },
   customer: {
     type: String,

@@ -6,8 +6,6 @@ import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
 import { addProject } from '/imports/api/projectsMethods.js';
 import { ProjectSchema } from '/imports/schemas/ProjectSchema.js';
 
-import { addCustomer } from '/imports/api/customersMethods.js';
-
 export class AddProject extends Component {
   constructor(props) {
     super(props);
@@ -104,7 +102,24 @@ export class AddProject extends Component {
 
     this.setState({
       customer: e.target.value,
+    }, () => {
+      this.searchCustomerId();
     });
+  }
+
+  searchCustomerId() {
+    let customerIndex = _.findIndex(this.props.customers, { name: this.state.customer });
+
+    if(customerIndex === -1) {
+      this.setState({
+        customerId: '',
+      });
+    } else {
+      // set customer ID from array of customers in props
+      this.setState({
+        customerId: this.props.customers[customerIndex]._id,
+      });
+    }
   }
 
   onCustomerFocus() {
@@ -149,6 +164,7 @@ export class AddProject extends Component {
   onCustomerClick(e) {
     this.setState({
       customer: e.target.firstChild.nodeValue,
+      customerId: e.target.dataset.customerId,
     });
   }
 
@@ -226,36 +242,7 @@ export class AddProject extends Component {
   onSubmitHandle(event) {
     event.preventDefault();
 
-    let customerIndex = _.findIndex(this.props.customers, { name: this.state.customer });
-
-    if (customerIndex === -1) {
-      // Customer does not exist in props array of customers
-      let customer = { name: this.state.customer };
-
-      addCustomer.call(customer, (err, res) => {
-        if (err) {
-          console.error(err.error);
-        } else {
-          this.setState({
-            // set customer ID from method return value
-            customerId: res,
-          }, () => {
-            // after state set, validate project
-            this.validateProject();
-          });
-        }
-      });
-
-    } else {
-      // Customer exists
-      this.setState({
-        // set customer ID from array of customers in props
-        customerId: this.props.customers[customerIndex]._id,
-      }, () => {
-        // after state set, validate project
-        this.validateProject();
-      });
-    }
+    this.validateProject();
   }
 
   setError(err) {
@@ -292,7 +279,7 @@ export class AddProject extends Component {
                 <div className='pt-popover-content'>
                   <ul className='pt-menu'>
                     {this.state.customerResults.map((customer) => {
-                      return <li className='pt-menu-item' onClick={this.onCustomerClick} key={customer.entry._id}>{customer.entry.name}</li>;
+                      return <li className='pt-menu-item' onClick={this.onCustomerClick} data-customer-id={customer.entry._id} key={customer.entry._id}>{customer.entry.name}</li>;
                     })}
                   </ul>
                 </div>

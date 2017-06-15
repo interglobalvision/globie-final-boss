@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor'
 import { Projects } from '/imports/collections/projects.js';
 import { ProjectSchema } from '/imports/schemas/ProjectSchema.js';
 
+import { addCustomer } from '/imports/api/customersMethods.js';
+
 export const addProject = new ValidatedMethod({
   name: 'Projects.methods.add',
   validate: ProjectSchema.validator(),
@@ -17,6 +19,30 @@ export const addProject = new ValidatedMethod({
     // Check if user is admin
     if (!Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('Projects.methods.insert.not-allowed', 'Must be admin to do this.');
+    }
+
+    // Prepare Project document object
+    let newProject = {
+      name,
+      url,
+      customerId,
+      customer,
+      minDays,
+      maxDays,
+      rate,
+      currency,
+      minQuote,
+      maxQuote,
+      userId: this.userId,
+    };
+
+    // Check if customer is a new customer
+    if (customerId === undefined) {
+      let newCustomerId = addCustomer.call({
+        name: customer
+      });
+
+      Project.customerId = newCustomerId;
     }
 
     Projects.insert({

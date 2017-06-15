@@ -5,7 +5,8 @@ import { CustomerSchema } from '/imports/schemas/CustomerSchema.js';
 
 export const addCustomer = new ValidatedMethod({
   name: 'Customers.methods.add',
-  validate: CustomerSchema.validator(),
+
+  validate:  CustomerSchema.validator(),
 
   run({name}) {
 
@@ -26,5 +27,5 @@ export const addCustomer = new ValidatedMethod({
     return Customers.insert({
       name,
     });
-  }
+  },
 });
