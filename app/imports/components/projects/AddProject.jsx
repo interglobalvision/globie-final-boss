@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import smartSearch from 'smart-search';
+import _ from 'lodash';
 
 import { SingleInput } from '/imports/components/inputs/SingleInput.jsx';
 import { addProject } from '/imports/api/projectsMethods.js';
@@ -13,7 +15,10 @@ export class AddProject extends Component {
     this.onSubmitHandle = this.onSubmitHandle.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
     this.onUrlChange = this.onUrlChange.bind(this);
-    this.onClientChange = this.onClientChange.bind(this);
+    this.onCustomerChange = this.onCustomerChange.bind(this);
+    this.onCustomerFocus = this.onCustomerFocus.bind(this);
+    this.onCustomerBlur = this.onCustomerBlur.bind(this);
+    this.onCustomerClick = this.onCustomerClick.bind(this);
     this.onMinDaysChange = this.onMinDaysChange.bind(this);
     this.onMaxDaysChange = this.onMaxDaysChange.bind(this);
     this.onRateChange = this.onRateChange.bind(this);
@@ -25,13 +30,16 @@ export class AddProject extends Component {
     return {
       name: '',
       url:  '',
-      client: '',
+      customer: '',
+      customerId: '',
       minDays: 0,
       maxDays: 0,
       rate: 0,
       currency: 'MXN',
       minQuote: 0,
       maxQuote: 0,
+      customerResults: {},
+      customerFocus: false,
       validationError: undefined,
     };
   }
@@ -40,7 +48,8 @@ export class AddProject extends Component {
     return this.cleanObject({
       name: this.state.name,
       url: this.state.url,
-      client: this.state.client,
+      customer: this.state.customer,
+      customerId: this.state.customerId,
       minDays: this.state.minDays,
       maxDays: this.state.maxDays,
       rate: this.state.rate,
@@ -86,9 +95,76 @@ export class AddProject extends Component {
     });
   }
 
-  onClientChange(e) {
+  onCustomerChange(e) {
+    if (this.props.customers) {
+      this.setCustomerResults(e.target.value);
+    }
+
     this.setState({
-      client: e.target.value,
+      customer: e.target.value,
+    }, () => {
+      this.searchCustomerId();
+    });
+  }
+
+  searchCustomerId() {
+    let customerIndex = _.findIndex(this.props.customers, { name: this.state.customer });
+
+    if(customerIndex === -1) {
+      this.setState({
+        customerId: '',
+      });
+    } else {
+      // set customer ID from array of customers in props
+      this.setState({
+        customerId: this.props.customers[customerIndex]._id,
+      });
+    }
+  }
+
+  onCustomerFocus() {
+    this.clearCustomerTimer();
+    this.setState({
+      customerFocus: true,
+    });
+  }
+
+  onCustomerBlur() {
+    var _this = this;
+
+    this.customerTimer = setTimeout(function() {
+      _this.clearCustomerTimer();
+      _this.setState({
+        customerFocus: false,
+      });
+    }, 100);
+  }
+
+  clearCustomerTimer() {
+    if(typeof this.customerTimer == "number") {
+      clearTimeout(this.customerTimer);
+      delete this.customerTimer;
+    }
+  }
+
+  setCustomerResults(query) {
+    let results = smartSearch(this.props.customers, query, {name: true});
+
+    let customerResults = {};
+
+    if (results !== undefined) {
+      customerResults = results;
+    }
+
+    this.setState({
+      customerResults: customerResults,
+    });
+  }
+
+  onCustomerClick(e) {
+    this.setState({
+      customer: e.target.firstChild.nodeValue,
+      customerId: e.target.dataset.customerId,
     });
   }
 
@@ -133,9 +209,7 @@ export class AddProject extends Component {
     this.setState(this.getInitalState());
   }
 
-  onSubmitHandle(event) {
-    event.preventDefault();
-
+  validateProject() {
     this.setState({
       validationError: undefined,
     });
@@ -165,8 +239,13 @@ export class AddProject extends Component {
     }
   }
 
+  onSubmitHandle(event) {
+    event.preventDefault();
+
+    this.validateProject();
+  }
+
   setError(err) {
-    debugger
     this.setState({
       validationError: err.reason,
     });
@@ -177,53 +256,60 @@ export class AddProject extends Component {
       <form onSubmit={this.onSubmitHandle}>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
+            <label className='grid-column'>
               Name
-              <input className='pt-input margin-top-micro' type='text' name='project-name-input' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
+              <input className='pt-input margin-top-micro' type='text' name='project-name-input' autoComplete='off' onChange={this.onNameChange} value={this.state.name} placeholder='Project title' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
+            <label className='grid-column'>
               URL
-              <input className='pt-input margin-top-micro' type='text' name='project-url-input' onChange={this.onUrlChange} value={this.state.url} placeholder='http://' />
+              <input className='pt-input margin-top-micro' type='text' name='project-url-input' autoComplete='off' onChange={this.onUrlChange} value={this.state.url} placeholder='http://' />
             </label>
+          </div>
+          <div className='grid-item item-s-12 item-m-4 margin-bottom-small'>
+            <label className='grid-column'>
+              Customer
+              <input className='pt-input margin-top-micro' type='text' name='project-customer-input' autoComplete='off' onChange={this.onCustomerChange} onFocus={this.onCustomerFocus} onBlur={this.onCustomerBlur} value={this.state.customer} placeholder='Customer' />
+            </label>
+            {this.state.customerResults.length > 0 && this.state.customerFocus &&
+            <div id='customer-search-holder'>
+              <div id='customer-search-results' className='pt-popover pt-minimal'>
+                <div className='pt-popover-content'>
+                  <ul className='pt-menu'>
+                    {this.state.customerResults.map((customer) => {
+                      return <li className='pt-menu-item' onClick={this.onCustomerClick} data-customer-id={customer.entry._id} key={customer.entry._id}>{customer.entry.name}</li>;
+                    })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            }
           </div>
         </div>
 
         <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-4'>
-            <label className='grid-column margin-bottom-small'>
-              Client
-              <input className='pt-input margin-top-micro' type='text' name='project-client-input' onChange={this.onClientChange} value={this.state.client} placeholder='Client' />
-            </label>
-          </div>
-          <div className='grid-item item-s-12 item-m-4 grid-row align-items-end margin-bottom-small'>
-            <button className='pt-button margin-top-micro'>Add New Client</button>
-          </div>
-        </div>
-
-        <div className='grid-row'>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Days (min)
-              <input className='pt-input margin-top-micro' type='number' name='project-time-min-input' onChange={this.onMinDaysChange} value={this.state.minDays} placeholder='Min' />
+              <input className='pt-input margin-top-micro' type='number' name='project-time-min-input' onChange={this.onMinDaysChange} value={this.state.minDays} placeholder='Min' min='1' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Days (max)
-              <input className='pt-input margin-top-micro' type='number' name='project-time-max-input' onChange={this.onMaxDaysChange} value={this.state.maxDays} placeholder='Max' />
+              <input className='pt-input margin-top-micro' type='number' name='project-time-max-input' onChange={this.onMaxDaysChange} value={this.state.maxDays} placeholder='Max' min='1' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Rate
               <input className='pt-input margin-top-micro' type='number' name='project-rate-input' onChange={this.onRateChange} value={this.state.rate} placeholder='Rate' />
             </label>
           </div>
-          <div className='grid-item item-s-12 item-m-3'>
-            <label className='grid-column margin-bottom-small'>
+          <div className='grid-item item-s-12 item-m-3 margin-bottom-small'>
+            <label className='grid-column'>
               Quote Currency
               <select className='pt-input margin-top-micro' name='project-currency-input' onChange={this.onCurrencyChange} value={this.state.currency}>
                 <option value='MXN'>MXN</option>

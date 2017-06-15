@@ -11,7 +11,7 @@ export class ListProjectsItem extends Component {
           {this.props.project.url}
         </div>
         <div className='grid-item item-s-2'>
-          {this.props.project.client}
+          {this.props.project.customer}
         </div>
         <div className='grid-item item-s-3'>
           *deadline*

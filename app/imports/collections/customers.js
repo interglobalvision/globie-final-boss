@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-class ProjectsCollection extends Mongo.Collection {
+class CustomersCollection extends Mongo.Collection {
   insert(doc, callback) {
     doc.createdAt = doc.createdAt || new Date();
     doc.updatedAt = doc.updatedAt || new Date();
@@ -22,9 +22,9 @@ class ProjectsCollection extends Mongo.Collection {
   }
 }
 
-export const Projects = new ProjectsCollection('Projects');
+export const Customers = new CustomersCollection('Customers');
 
-Projects.deny({
+Customers.deny({
   insert() { return true; },
   update() { return true; },
   remove() { return true; },
